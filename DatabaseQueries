@@ -1,0 +1,47 @@
+
+CREATE TABLE `weddingapi`.`wedding` (
+  `uid` INT NOT NULL,
+  `person1` VARCHAR(255) NULL,
+  `person2` VARCHAR(255) NULL,
+  `description` VARCHAR(255) NULL,
+  PRIMARY KEY (`uid`));
+
+USE 'weddingapi';
+
+ALTER TABLE wedding ADD address varchar(255) NULL;
+
+ALTER TABLE `weddingapi`.`wedding`
+CHANGE COLUMN `uid` `uid` VARCHAR(255) NOT NULL ;
+
+ALTER TABLE `weddingapi`.`wedding` 
+CHANGE COLUMN `uid` `weddingId` VARCHAR(255) NOT NULL ;
+
+CREATE TABLE weddingapi.deviceToken (
+  deviceToken varchar(255) NOT NULL,
+  weddingId VARCHAR(255) NOT NULL,
+  PRIMARY KEY (deviceToken),
+  FOREIGN KEY (weddingId) REFERENCES weddingapi.wedding(weddingId));
+
+CREATE TABLE weddingapi.event (
+  uid BIGINT(20) NOT NULL AUTO_INCREMENT,
+  eventName VARCHAR(255) NOT NULL,
+  CONSTRAINT pk_uid PRIMARY KEY (uid));
+
+CREATE TABLE weddingapi.weddingEvent (
+uid BIGINT(20) NOT NULL AUTO_INCREMENT,
+weddingId VARCHAR(255) NOT NULL,
+eventId BIGINT(20) NOT NULL,
+venue VARCHAR(255),
+dueTime DATETIME,
+expired BOOLEAN NOT NULL DEFAULT 0,
+CONSTRAINT pk_uid PRIMARY KEY (uid),
+CONSTRAINT fk_weddingId FOREIGN KEY (weddingId) REFERENCES weddingapi.wedding(weddingId),
+CONSTRAINT fk_eventId FOREIGN KEY (eventId) REFERENCES weddingapi.event(uid));
+
+ALTER TABLE `weddingapi`.`weddingEvent` 
+ADD COLUMN `description` TEXT NULL AFTER `expired`;
+
+Execeute From Here-
+
+ALTER TABLE 'weddingapi'.'weddingEvent' DROP description;
+ALTER TABLE 'weddingapi'.'weddingEvent' ADD COLUMN message VARCHAR(1000) NOT NULL DEFAULT "DEFAULT";
