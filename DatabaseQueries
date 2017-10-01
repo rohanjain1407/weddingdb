@@ -1,4 +1,6 @@
 
+CREATE DATABASE weddingapi;
+
 CREATE TABLE `weddingapi`.`wedding` (
   `uid` INT NOT NULL,
   `person1` VARCHAR(255) NULL,
